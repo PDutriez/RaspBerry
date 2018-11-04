@@ -19,7 +19,6 @@ static int input;
 int main ()
 {
     printf ("Ingrese el numero de LED o el comando\n");
-    createall();
     expoutall();
     while ((input= getchar ()) != 'q' && input != 'Q')
     {
@@ -85,7 +84,6 @@ int main ()
 
 
     }
-    closeall();
     return 0;
 }
 
@@ -102,14 +100,7 @@ void show_port (char Port_A)
     for (bit_number=7; bit_number>=0; --bit_number)
     {
         printf("\nRegistro:%c\tBit:%d\tValor:%d\n",Port_A,bit_number,bitGet(Port_A,bit_number));
-	if(bitGet(Port_A,bit_number))
-	{
-		ledon(bit_number);
-	}
-	else
-	{
-		ledoff(bit_number);
-	}
+	       changeled(bit_number,bitGet(Port_A,bit_number));
     }
     printf ("\n");
 }

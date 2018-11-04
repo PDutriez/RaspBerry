@@ -92,7 +92,7 @@ int bitGet(char puerto,int bit)
       {
         copy=registro.d&(1<<bit);
       }
-      
+
       //Con !!copy obtenemos si su valor es 0 o 1
     }
 	return(!!copy);
