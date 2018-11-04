@@ -108,7 +108,8 @@ int bitGet(char puerto,int bit)
 void maskOn(char puerto,int mask)
 {
     int largo=checkinfo(puerto,0);
-    for(int count=0;count<=largo;++count)
+    int count;
+    for(count=0;count<=largo;++count)
     {
         if(mask%2)
         {
@@ -121,7 +122,8 @@ void maskOn(char puerto,int mask)
 void maskOff(char puerto,int mask)
 { //Hacemos bit a bit la mascara, utilizando las otras funciones
     int largo=checkinfo(puerto,0);
-    for(int count=0;count<=largo;++count)
+    int count;
+    for(count=0;count<=largo;++count)
     {
         if(mask%2)
         {
@@ -134,7 +136,8 @@ void maskOff(char puerto,int mask)
 void maskToggle(char puerto,int mask)
 {
     int largo=checkinfo(puerto,0);
-    for(int count=0;count<=largo;++count)
+    int count;
+    for(count=0;count<=largo;++count)
     {
         if(mask%2)
         {
