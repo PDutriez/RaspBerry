@@ -6,6 +6,7 @@
 #include "puerto.h"
 #include "LED.h"
 #include "hardware.h"
+#include "Addons.h"
 
 /*******************************************************************************
  * variables propias de este archivo
@@ -24,8 +25,12 @@ int main ()
       while ((input= getchar ()) != 'q' && input != 'Q')
       {
           /***********************************************************************
-          * primero revisa se se trata de un numero de led
+          * primero revisa si se trata de un numero de led
           ***********************************************************************/
+
+          // aca establecer que si recibe una 'L' es un nro de led, si es una 'N'
+          // entonces se trata de un valor para activar el contador de bits
+
           if((input <= '9') && (input >= '0'))
           {
               int counter=0;
@@ -76,6 +81,10 @@ int main ()
           {
               boomerang();
           }
+          else if ((input == 'n') || (input == 'N'))
+          {
+              bit_counter ();
+          }
           /***********************************************************************
           * en caso de tocar cualquier otra letra (excepto la Q, pues con ella
           * se termina el programa)se notificará que no hay acciones disponibles
@@ -109,27 +118,4 @@ void show_port (char Port_A)
 	       changeled(bit_number,bitGet(Port_A,bit_number));
     }
     printf ("\n");
-}
-void boomerang(void)
-{
-    int counter;
-    maskOff ('a', MASK);
-    show_port ('a');
-    while(((input=getchar())!='f' && input!='F' )|| (input!= 'q' && input != 'Q'))
-    {
-      for(counter=0;counter<=7;++counter)
-      {
-        bitSet('a',counter);
-        show_port ('a');
-        bitClr('a',counter);
-        show_port ('a');
-      }
-      for(counter=7;0<=counter;--counter)
-      {
-        bitSet('a',counter);
-        show_port ('a');
-        bitClr('a',counter);
-        show_port ('a');
-      }
-    }
 }

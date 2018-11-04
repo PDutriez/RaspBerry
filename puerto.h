@@ -12,8 +12,8 @@
 * utilizar.
 *******************************************************************************/
 void maskToggle(char puerto,int mask); //Cambia al estado opuesto los bits
-void maskOff(char puerto,int mask); //Apaga los bits de la mascara
-void maskOn(char puerto,int mask); //Prende los bits de la mascara
+void maskOff(char puerto,int mask);    //Apaga los bits de la mascara
+void maskOn(char puerto,int mask);    //Prende los bits de la mascara
 /*******************************************************************************
 * Estas 3 funciones se encargan de enmascar de solo un bit los puertos de
 * distinta manera, su logica es muy similar entre ellas pero difieren en la

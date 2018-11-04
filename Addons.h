@@ -1,10 +1,11 @@
-#ifndef LED_H
-#define LED_H
+#ifndef ADDONS
+#define ADDONS
 
-#define MASK  0xFF
 /*******************************************************************************
  * Declaración de funciones
  ******************************************************************************/
-void show_port (char Port_A);//Imprime en consola el valor del puerto,bit a bit
+void boomerang(void) ;        // auto fantástico
+void bit_counter (void);      // contador de 8 bits
+void sec_timer (void);            // timer de 1s
 /******************************************************************************/
 #endif
