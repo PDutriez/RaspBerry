@@ -6,5 +6,6 @@
  * Declaración de funciones
  ******************************************************************************/
 void show_port (char Port_A);//Imprime en consola el valor del puerto,bit a bit
+void boomerang(void);
 /******************************************************************************/
 #endif

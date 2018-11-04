@@ -1,6 +1,6 @@
 #ifndef HARDWARE_H
 #define HARDWARE_H
-void changeled(unsigned int bit,unsigned int value);
+int changeled(unsigned int bit,unsigned int value);
 //Se encarga de modificar los leds de la RASPBERRYPI
 
 int expoutall(void);

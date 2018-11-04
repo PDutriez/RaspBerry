@@ -15,37 +15,47 @@
 static int out(void);
 static int export(void);
 
-static FILE * handle_export;
-static FILE * handle_direction;
-static FILE * handler;
+
+
+
 const static char* gpio[CANTPORTS]={"17","4","18","23","24","25","22","27"};
 
-void changeled(unsigned int bit, unsigned int value)//Funcion para modificar los LEDS de la RPI
+int changeled(unsigned int bit,unsigned int value)//Funcion para modificar los LEDS de la RPI
 {
+	char valor='0'+value;
+	printf("%c",valor);
+	FILE * handler;
 	char pin[50];//Arreglo utilizado como string del comando
-	sprintf(pin,"sys/class/gpio/gpio%s/value", gpio[bit]);//Cargamos el comando del puerto correspondiente
+	sprintf(pin,"/sys/class/gpio/gpio%s/value", gpio[bit]);//Cargamos el comando del puerto correspondiente
 	if(value==1 || value==0)
 	{
 					if ((handler = fopen(pin,"w")) == NULL) //Verificamos la veracidad del handler
 					{
 								printf("Cannot open device. Try again later.\n");
-								exit(1);
+								return 0;
 					}
 					else
 					{
 								printf("Device successfully opened\n");
-								if(fputc(value+'0',handler)==-1) // Set pin high
+								if(fputc(valor,handler)==-1) // Set pin high
 								{
 											printf("Clr_Pin: Cannot write to file. Try again later.\n");
-											exit(1);
+											return 0;
 								}
 								else
+								{
 											printf("Write to file %s successfully done.\n",gpio[bit]);
 								}
+					}
 								fclose(handler);
+								return 1;
+
 	}
 	else
+	{
 					printf("Value out of range\n");
+					return 0;
+	}
 }
 
 int expoutall(void)
@@ -66,34 +76,37 @@ int expoutall(void)
 
 static int export(void)
 {
-	int nWritten;
-	if ((handle_export=  fopen("/sys/class/gpio/export","w")) == NULL)
-	{
-		printf("Cannot open EXPORT File. Try again later.\n");
-		exit(1);
-	}
-	int counter;
+	FILE * handle_export;
+	int nWritten, counter;
 	for(counter=0;counter<CANTPORTS;++counter)
 	{
 //ESTABLECEMOS EL EXPORT DEL PIN
-		nWritten=fputs(gpio[counter],handle_export);
-		if (nWritten==-1)
-		{
-			printf("Cannot EXPORT PIN . Try again later.\n");
-			exit(1);
-		}
-		else
-			printf("EXPORT File opened succesfully\n");
+				if ((handle_export=  fopen("/sys/class/gpio/export","w")) == NULL)
+				{
+						printf("Cannot open EXPORT File. Try again later.\n");
+						return 0;
+				}
+				nWritten=fputs(gpio[counter],handle_export);
+
+				if (nWritten==-1)
+				{
+						printf("Cannot EXPORT PIN . Try again later.\n");
+						return 0;
+				}
+				else
+						printf("EXPORT File opened succesfully\n");
+
+				fclose(handle_export);
 	}
-	fclose(handle_export);
 	return 1;
 }
 
 static int out(void)
 {
-	int nWritten;
-	int counter;
+	FILE * handle_direction;
+	int nWritten, counter;
 	char outdirection[50];//Arreglo utilizado como string del comando
+
 	for(counter=0;counter<CANTPORTS;++counter)
 	{
 //ABRIMOS UN PUNTERO AL ARCHIVO PARA PODER MODIFICAR EL ARCHIVO
@@ -101,12 +114,13 @@ static int out(void)
 		if ((handle_direction= fopen(outdirection,"w")) == NULL)//Abrimos el archivo
 		{
 			printf("Cannot open DIRECTION File");
-			exit(1);
+			return 0;
 		}
+
 		if ((nWritten=fputs("out",handle_direction))==-1)//Lo seteamos como salida
 		{
 			printf("Cannot open DIRECTION pin. Try again later.\n");
-			exit(1);
+			return 0;
 		}
 		else
 		{

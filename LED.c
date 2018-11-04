@@ -19,70 +19,76 @@ static int input;
 int main ()
 {
     printf ("Ingrese el numero de LED o el comando\n");
-    expoutall();
-    while ((input= getchar ()) != 'q' && input != 'Q')
+    if(expoutall())
     {
-        /***********************************************************************
-        * primero revisa se se trata de un numero de led
-        ***********************************************************************/
-        if((input <= '9') && (input >= '0'))
-        {
-            int counter=0;
-            do{
-                counter=(counter*10)+input;
+      while ((input= getchar ()) != 'q' && input != 'Q')
+      {
+          /***********************************************************************
+          * primero revisa se se trata de un numero de led
+          ***********************************************************************/
+          if((input <= '9') && (input >= '0'))
+          {
+              int counter=0;
+              do{
+                  counter=(counter*10)+input;
+                }
+              while((input=getchar()) != '\n');
+  //No se va a utilizar ahora pero en un futuro necesitaremos entrada de 2 digitos
+              if ((counter <= '7') && (counter >= '0'))
+              {
+                  counter-='0';
+                  bitSet ('a', counter);
+                  show_port ('a');
               }
-            while((input=getchar()) != '\n');
-//No se va a utilizar ahora pero en un futuro necesitaremos entrada de 2 digitos
-            if ((counter <= '7') && (counter >= '0'))
-            {
-                counter-='0';
-                bitSet ('a', counter);
-                show_port ('a');
-            }
-            else
-            printf("\nValor fuera del rango.\n");
-        }
-        /***********************************************************************
-        * como el puerto solo tiene 8 espacios avisa en caso de que el numero
-        * no coincida con alguno de ellos
-        ***********************************************************************/
+              else
+              printf("\nValor fuera del rango.\n");
+          }
+          /***********************************************************************
+          * como el puerto solo tiene 8 espacios avisa en caso de que el numero
+          * no coincida con alguno de ellos
+          ***********************************************************************/
 
-        /***********************************************************************
-        * si se presiona la letra 'T' todos los bits cambian a su opuesto
-        ***********************************************************************/
-        else if ((input == 't') || (input == 'T'))
-        {
-            maskToggle ('a', MASK);
-            show_port ('a');
-        }
-        /***********************************************************************
-        * si se presiona la letra 'S' prende todos los bits
-        ***********************************************************************/
-        else if ((input == 's') || (input == 'S'))
-        {
-            maskOn ('a', MASK);
-            show_port ('a');
-        }
-        /***********************************************************************
-        * si se presiona la letra 'C' apaga todos los bits
-        ***********************************************************************/
-        else if ((input == 'c') || (input == 'C'))
-        {
-            maskOff ('a', MASK);
-            show_port ('a');
-        }
-        /***********************************************************************
-        * en caso de tocar cualquier otra letra (excepto la Q, pues con ella
-        * se termina el programa)se notificará que no hay acciones disponibles
-        ***********************************************************************/
-        else  if(input!='\0' && input!='\n')
-            printf ("El comando ingresado no es válido\n");
-        /***********************************************************************
-        * para finalizar, muestra el puerto en la pantalla para que se puedan
-        * apreciar los cambios realizados
-        ***********************************************************************/
+          /***********************************************************************
+          * si se presiona la letra 'T' todos los bits cambian a su opuesto
+          ***********************************************************************/
+          else if ((input == 't') || (input == 'T'))
+          {
+              maskToggle ('a', MASK);
+              show_port ('a');
+          }
+          /***********************************************************************
+          * si se presiona la letra 'S' prende todos los bits
+          ***********************************************************************/
+          else if ((input == 's') || (input == 'S'))
+          {
+              maskOn ('a', MASK);
+              show_port ('a');
+          }
+          /***********************************************************************
+          * si se presiona la letra 'C' apaga todos los bits
+          ***********************************************************************/
+          else if ((input == 'c') || (input == 'C'))
+          {
+              maskOff ('a', MASK);
+              show_port ('a');
+          }
+          else if ((input == 'f') || (input == 'F'))
+          {
+              boomerang();
+          }
+          /***********************************************************************
+          * en caso de tocar cualquier otra letra (excepto la Q, pues con ella
+          * se termina el programa)se notificará que no hay acciones disponibles
+          ***********************************************************************/
+          else  if(input!='\0' && input!='\n')
+              printf ("El comando ingresado no es válido\n");
+          /***********************************************************************
+          * para finalizar, muestra el puerto en la pantalla para que se puedan
+          * apreciar los cambios realizados
+          ***********************************************************************/
 
 
+      }
     }
     return 0;
 }
@@ -103,4 +109,27 @@ void show_port (char Port_A)
 	       changeled(bit_number,bitGet(Port_A,bit_number));
     }
     printf ("\n");
+}
+void boomerang(void)
+{
+    int counter;
+    maskOff ('a', MASK);
+    show_port ('a');
+    while(((input=getchar())!='f' && input!='F' )|| (input!= 'q' && input != 'Q'))
+    {
+      for(counter=0;counter<=7;++counter)
+      {
+        bitSet('a',counter);
+        show_port ('a');
+        bitClr('a',counter);
+        show_port ('a');
+      }
+      for(counter=7;0<=counter;--counter)
+      {
+        bitSet('a',counter);
+        show_port ('a');
+        bitClr('a',counter);
+        show_port ('a');
+      }
+    }
 }
