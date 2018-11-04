@@ -11,7 +11,7 @@
 
 #define CANTPORTS   8
 
-static int write(void);
+
 static int out(void);
 static int export(void);
 
@@ -111,7 +111,7 @@ static int out(void)
 		{
 			printf("DIRECTION File for PIN opened succesfully\n");
 		}
-		fclose(outdirection);
+		fclose(handle_direction);
 	}
 
 	return 1;
