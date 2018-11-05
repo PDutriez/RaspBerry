@@ -10,16 +10,18 @@
 /*******************************************************************************
  * variables propias de este archivo
  ******************************************************************************/
-static int num_mask;    //Mascara para la funcion bit_counter
+static unsigned char num_mask;    //Mascara para la funcion bit_counter
 static int input;
 /*******************************************************************************
  * funcion que hace de contador de bits de 0 a 255
  ******************************************************************************/
 void bit_counter (void)
 {
-    while(((input=getchar())!='n' && input!='N' )|| (input!= 'q' && input != 'Q'))
+    maskOff ('a', MASK);//Limpiamos los LEDS
+    show_port ('a');
+    while(((input=getchar())!='n' && input!='N' )&&(input!= 'q' && input != 'Q'))
     {
-        for (num_mask =0;num_mask <= 255; num_mask++)
+        for (num_mask=0;num_mask <= 255;++num_mask)
         {
             maskOn ('a', num_mask);
             show_port ('a');
@@ -36,13 +38,13 @@ void bit_counter (void)
  ******************************************************************************/
 void sec_timer (void)
 {
-    long int time_init = time (NULL);
-    long int time_end;
+    float time_init = time (NULL);
+    float time_end;
     int on_off = 1;
-    int secs = 1;                 //segundos a esperar, tiene una demora de 1s aprox
+    int secs = 0.5;                 //segundos a esperar, tiene una demora de 1s aprox
     while (on_off)                //por si se busca mucha precision para el tiempo
     {
-        if (secs >= 1)
+        if (secs >= 0)
         {
             time_end = time (NULL);
             if (time_end >= (time_init + secs) )
@@ -53,6 +55,7 @@ void sec_timer (void)
         else
         {
             printf ("\nerror, los segundos ingresados no son validos\n");
+            on_off=0;
         }
     }
 }
@@ -63,14 +66,15 @@ void sec_timer (void)
 void boomerang(void)
 {
     int counter;
-    maskOff ('a', MASK);
+    maskOff ('a', MASK);//Limpiamos los LEDS
     show_port ('a');
-    while(((input=getchar())!='f' && input!='F' )|| (input!= 'q' && input != 'Q'))
+    while(((input=getchar())!='f' && input!='F' )&&(input!= 'q' && input != 'Q'))
     {
       for(counter=0;counter<=7;++counter)   //ida del bit 0 al 7
       {
         bitSet('a',counter);
         show_port ('a');
+        sec_timer ();
         bitClr('a',counter);
         show_port ('a');
         sec_timer ();
@@ -79,6 +83,7 @@ void boomerang(void)
       {
         bitSet('a',counter);
         show_port ('a');
+        sec_timer ();
         bitClr('a',counter);
         show_port ('a');
         sec_timer ();

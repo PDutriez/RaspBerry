@@ -112,7 +112,7 @@ void maskOn(char puerto,int mask)
 {
     int largo=checkinfo(puerto,0);
     int count;
-    for(count=0;count<=largo;++count)
+    for(count=0;count<largo;++count)
     {
         if(mask%2)
         {
