@@ -12,6 +12,9 @@
  * variables propias de este archivo
  ******************************************************************************/
 static int input;
+static char flag_car;
+static char flag_count;
+static char flag_blink;
 /******************************************************************************/
 
 /*******************************************************************************
@@ -22,16 +25,14 @@ int main ()
     printf ("Ingrese el numero de LED o el comando\n");
     if(expoutall())
     {
+      flag_car=0; //Iniciamos con el flag en 0
+      flag_count=0; //Iniciamos con el flag en 0
       while ((input= getchar ()) != 'q' && input != 'Q')
       {
           /***********************************************************************
           * primero revisa si se trata de un numero de led
           ***********************************************************************/
-
-          // aca establecer que si recibe una 'L' es un nro de led, si es una 'N'
-          // entonces se trata de un valor para activar el contador de bits
-
-          if((input <= '9') && (input >= '0'))
+          if(((input <= '9') && (input >= '0'))&&(flag_car!=1)&&(flag_count!=1)&&(flag_blink!=1))
           {
               int counter=0;
               do{
@@ -56,7 +57,7 @@ int main ()
           /***********************************************************************
           * si se presiona la letra 'T' todos los bits cambian a su opuesto
           ***********************************************************************/
-          else if ((input == 't') || (input == 'T'))
+          else if (((input == 't') || (input == 'T'))&&(flag_car!=1)&&(flag_count!=1)&&(flag_blink!=1))
           {
               maskToggle ('a', MASK);
               show_port ('a');
@@ -64,7 +65,7 @@ int main ()
           /***********************************************************************
           * si se presiona la letra 'S' prende todos los bits
           ***********************************************************************/
-          else if ((input == 's') || (input == 'S'))
+          else if (((input == 's') || (input == 'S'))&&(flag_car!=1)&&(flag_count!=1)&&(flag_blink!=1))
           {
               maskOn ('a', MASK);
               show_port ('a');
@@ -72,18 +73,31 @@ int main ()
           /***********************************************************************
           * si se presiona la letra 'C' apaga todos los bits
           ***********************************************************************/
-          else if ((input == 'c') || (input == 'C'))
+          else if (((input == 'c') || (input == 'C'))&&(flag_car!=1)&&(flag_count!=1)&&(flag_blink!=1))
           {
               maskOff ('a', MASK);
               show_port ('a');
           }
-          else if ((input == 'f') || (input == 'F'))
+          else if (((input == 'f') || (input == 'F'))&&(flag_count!=1)&&(flag_blink!=1))
           {
-              boomerang();
+              if(flag_car==0)
+                  flag_car=1;
+              else if(flag_car==1)
+                  flag_car=0;
           }
-          else if ((input == 'n') || (input == 'N'))
+          else if (((input == 'n') || (input == 'N'))&&(flag_car!=1)&&(flag_blink!=1))
           {
-              bit_counter ();
+            if(flag_count==0)
+                flag_count=1;
+            else if(flag_count==1)
+                flag_count=0;
+          }
+          else if (((input == 'b') || (input == 'B'))&&(flag_car!=1)&&(flag_count!=1))
+          {
+              if(flag_blink==0)
+                  flag_blink=1;
+              else if(flag_blink==1)
+                  flag_blink=0;
           }
           /***********************************************************************
           * en caso de tocar cualquier otra letra (excepto la Q, pues con ella
@@ -95,7 +109,12 @@ int main ()
           * para finalizar, muestra el puerto en la pantalla para que se puedan
           * apreciar los cambios realizados
           ***********************************************************************/
-
+          if(flag_car)
+            boomerang();
+          if(flag_count)
+            bit_counter();
+          if(flag_blink)
+            blink();
 
       }
     }

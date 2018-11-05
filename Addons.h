@@ -6,6 +6,7 @@
  ******************************************************************************/
 void boomerang(void) ;        // auto fantástico
 void bit_counter (void);      // contador de 8 bits
-void sec_timer (void);            // timer de 1s
+void sec_timer (void);        // timer de 1s
+void blink(void);             // parpadeo de los LEDs
 /******************************************************************************/
 #endif
