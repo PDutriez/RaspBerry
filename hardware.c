@@ -92,7 +92,7 @@ int unexport(void)
 						return 0;
 				}
 				else
-						printf("EXPORT File opened succesfully\n");
+						printf("EXPORT File closed succesfully\n");
 
 				fclose(handle_export);
 	}
