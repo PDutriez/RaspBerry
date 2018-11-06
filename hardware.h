@@ -9,3 +9,4 @@ int expoutall(void);
 void closeall(void);
 //Se encarga de cerrar todos los punteros a file utlizados para la RPI
 #endif
+int unexport(void);

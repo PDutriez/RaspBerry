@@ -72,7 +72,32 @@ int expoutall(void)
 
 	return verify;
 }
+int unexport(void)
+{
+	FILE * handle_export;
+	int nWritten, counter;
+	for(counter=0;counter<CANTPORTS;++counter)
+	{
+//ESTABLECEMOS EL EXPORT DEL PIN
+				if ((handle_export=  fopen("/sys/class/gpio/unexport","w")) == NULL)
+				{
+						printf("Cannot open EXPORT File. Try again later.\n");
+						return 0;
+				}
+				nWritten=fputs(gpio[counter],handle_export);
 
+				if (nWritten==-1)
+				{
+						printf("Cannot EXPORT PIN . Try again later.\n");
+						return 0;
+				}
+				else
+						printf("EXPORT File opened succesfully\n");
+
+				fclose(handle_export);
+	}
+	return 1;
+}
 
 static int export(void)
 {
