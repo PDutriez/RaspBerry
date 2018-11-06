@@ -72,7 +72,7 @@ void boomerang(void)
       }
       if(direction==1)   //vuelta del bit 7 al 0
       {
-        if(--direction>=0)
+        if(--counter>=0)
         {
             bitSet('a',counter);
             show_port ('a');
