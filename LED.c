@@ -8,7 +8,7 @@
 #include "LED.h"
 #include "hardware.h"
 #include "Addons.h"
-#include "nonblock.c"
+#include "nonblock.h"
 /*******************************************************************************
  * variables propias de este archivo
  ******************************************************************************/
@@ -43,7 +43,6 @@ int main ()
           * primero revisa si se trata de un numero de led
           ***********************************************************************/
           if((input!='\n' || input))
-          input=getchar();
           {
               if(((input <= '9') && (input >= '0'))&&(flag_car!=1)&&(flag_count!=1)&&(flag_blink!=1))
               {

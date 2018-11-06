@@ -30,7 +30,7 @@ void sec_timer (void)
     float time_init = time (NULL);
     float time_end;
     int on_off = 1;
-    int secs = 0.75;                 //segundos a esperar, tiene una demora de 1s aprox
+    int secs = 1;                 //segundos a esperar, tiene una demora de 1s aprox
     while (on_off)                //por si se busca mucha precision para el tiempo
     {
         if (secs >= 0)
