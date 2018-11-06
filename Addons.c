@@ -27,10 +27,10 @@ void bit_counter (void)
  ******************************************************************************/
 void sec_timer (void)
 {
-    float time_init = time (NULL);
-    float time_end;
+    long int time_init = time (NULL);
+    long int time_end;
     int on_off = 1;
-    int secs = 1;                 //segundos a esperar, tiene una demora de 1s aprox
+    int secs = 5;                 //segundos a esperar, tiene una demora de 1s aprox
     while (on_off)                //por si se busca mucha precision para el tiempo
     {
         if (secs >= 0)
@@ -54,32 +54,40 @@ void sec_timer (void)
  ******************************************************************************/
 void boomerang(void)
 {
-    static char counter=-1;
+    static char counter=0;
     static char direction=0;//0=IaD , 1=DaI
     maskOff ('a', MASK);//Limpiamos los LEDS
     show_port ('a');
 
       if(direction==0)   //ida del bit 0 al 7
       {
-        if(++counter<=7)
+        if(counter<=7)
         {
             bitSet('a',counter);
             show_port ('a');
             sec_timer ();
+            ++counter;
         }
         else
-            direction=1;
+            {
+              direction=1;
+              --counter;
+            }
       }
       if(direction==1)   //vuelta del bit 7 al 0
       {
-        if(--counter>=0)
+        if(counter>=0)
         {
             bitSet('a',counter);
             show_port ('a');
             sec_timer ();
+            --counter;
         }
         else
-            direction=0;
+            {
+              direction=0;
+              ++counter;
+            }
       }
 }
 /*******************************************************************************
